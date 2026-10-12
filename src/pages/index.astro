@@ -1,6 +1,7 @@
 ---
 import App from '../main.jsx';
 import '../styles.css';
+import royalEmblem from '../../assets/royal-emblem.png';
 ---
 
 <!doctype html>
@@ -13,46 +14,27 @@ import '../styles.css';
     <title>Shrishti & Jaydeep — 12 December 2026</title>
   </head>
   <body>
-    <div class="entry" id="entry">
-      <section class="entry-seal" id="entry-seal" aria-label="Wedding invitation cover">
-        <button class="entry-emblem" id="open-card" aria-label="Open Shrishti and Jaydeep's invitation">
-          <span>✦</span>
-          <small>WITH LOVE</small>
-          <strong>S <i>&amp;</i> J</strong>
-          <small>A CELEBRATION OF LOVE &amp; TRADITION</small>
-        </button>
-        <p>Tap to open the invitation</p>
-      </section>
-      <article class="entry-card" id="entry-card" aria-hidden="true">
-        <p>॥ श्री गणेशाय नमः ॥</p>
-        <span>WITH THE BLESSINGS OF OUR FAMILIES</span>
-        <div>✦</div>
-        <h1>Shrishti <i>&amp;</i> Jaydeep</h1>
-        <p>Request the pleasure of your company<br />as they begin their beautiful journey together.</p>
-        <b>12 December 2026</b>
-        <b>Royal Hotel, Jhabua</b>
-        <button id="enter-site">Enter the celebration</button>
-      </article>
+    <div class="entry" id="entry" aria-label="Wedding invitation cover">
+      <div class="entry-panel entry-panel--top" aria-hidden="true"></div>
+      <div class="entry-panel entry-panel--bottom" aria-hidden="true"></div>
+      <button class="entry-trigger" id="open-invitation" aria-label="Open Shrishti and Jaydeep's wedding invitation">
+        <span class="sr-only">Tap to open the invitation</span>
+      </button>
     </div>
     <App client:load />
     <script>
       const entry = document.querySelector('#entry');
-      const seal = document.querySelector('#entry-seal');
-      const card = document.querySelector('#entry-card');
-      document.querySelector('#open-card')?.addEventListener('click', () => {
-        seal?.classList.add('is-open');
-        card?.classList.add('is-open');
-        card?.setAttribute('aria-hidden', 'false');
-        document.querySelector('#enter-site')?.focus();
-      });
-      document.querySelector('#enter-site')?.addEventListener('click', () => {
-        entry?.classList.add('is-gone');
-        document.querySelector<HTMLButtonElement>('.seal')?.click();
-      });
+      document.querySelector('#open-invitation')?.addEventListener('click', () => {
+        entry?.classList.add('is-opening');
+        window.setTimeout(() => {
+          entry?.classList.add('is-gone');
+          document.querySelector<HTMLButtonElement>('.seal')?.click();
+        }, 900);
+      }, { once: true });
     </script>
   </body>
 </html>
 
-<style is:global>
-  .entry{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:#f8f4ec;background-image:radial-gradient(circle at 50% 50%,transparent 29%,#c5a46d30 29.3%,transparent 29.6%),linear-gradient(45deg,transparent 48%,#c5a46d22 49%,transparent 50%);background-size:100% 100%,35px 35px;transition:opacity .7s,visibility .7s}.entry.is-gone{opacity:0;visibility:hidden}.entry-seal{text-align:center;transition:opacity .45s,transform .45s}.entry-seal.is-open{opacity:0;transform:scale(1.12);pointer-events:none}.entry-emblem{width:min(68vw,400px);aspect-ratio:1;border:1px solid #c5a46d;border-radius:50%;outline:7px double #c5a46d;outline-offset:-16px;background:radial-gradient(circle,#fff9ef 45%,transparent 46%);display:flex;align-items:center;justify-content:center;flex-direction:column;color:#702c3b;cursor:pointer;transition:transform .45s}.entry-emblem:hover{transform:scale(1.04)}.entry-emblem>span,.entry-card>div{font-size:32px;color:#c5a46d}.entry-emblem strong{font:clamp(4rem,12vw,7rem)/.8 'Cormorant Garamond',serif;margin:18px 0}.entry-emblem i,.entry-card h1 i{font-family:'Great Vibes',cursive;font-style:normal;font-size:.65em;color:#c5a46d;display:block}.entry-emblem small,.entry-seal>p,.entry-card>span{font:9px 'DM Sans',sans-serif;letter-spacing:.18em}.entry-seal>p{color:#856940;margin-top:28px;text-transform:uppercase}.entry-card{position:absolute;opacity:0;pointer-events:none;transform:translateY(25px) scale(.95);max-width:min(88vw,580px);padding:clamp(36px,7vw,68px);text-align:center;background:#fffaf1;outline:1px solid #c5a46d;outline-offset:-11px;box-shadow:0 20px 60px #45352f33;transition:opacity .5s .18s,transform .5s .18s;color:#45352f}.entry-card.is-open{opacity:1;pointer-events:auto;transform:none}.entry-card>p:first-child{font-family:'Playfair Display',serif;color:#702c3b}.entry-card h1{font:clamp(3.4rem,10vw,5.4rem)/.82 'Cormorant Garamond',serif;color:#702c3b;margin:18px 0}.entry-card h1 i{font-size:.55em}.entry-card>p:not(:first-child){font:15px/1.7 'DM Sans',sans-serif;margin:20px 0}.entry-card>b{display:block;font:1.2rem 'Playfair Display',serif;color:#702c3b;margin:4px}.entry-card button{margin-top:27px;border:1px solid #702c3b;background:#702c3b;color:#fff;padding:12px 22px;font:10px 'DM Sans',sans-serif;letter-spacing:.14em;text-transform:uppercase;cursor:pointer}@media(prefers-reduced-motion:reduce){.entry,.entry-seal,.entry-emblem,.entry-card{transition:none}}
+<style is:global define:vars={{ emblem: royalEmblem.src }}>
+  .entry{position:fixed;inset:0;z-index:50;overflow:hidden;background:#f8f4ec}.entry-panel{position:absolute;left:0;width:100%;height:50.1%;background-color:#f8f4ec;background-image:var(--emblem);background-repeat:no-repeat;background-size:auto 100vh;will-change:transform;transition:transform 900ms cubic-bezier(.77,0,.18,1)}.entry-panel--top{top:0;background-position:center top}.entry-panel--bottom{bottom:0;background-position:center bottom}.entry-trigger{position:absolute;inset:0;z-index:2;border:0;background:transparent;cursor:pointer}.entry-trigger:focus-visible{outline:3px solid #702c3b;outline-offset:-16px}.entry.is-opening .entry-panel--top{transform:translateY(-105%)}.entry.is-opening .entry-panel--bottom{transform:translateY(105%)}.entry.is-opening .entry-trigger{pointer-events:none}.entry.is-gone{display:none}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}@media(prefers-reduced-motion:reduce){.entry-panel{transition-duration:1ms}}
 </style>
