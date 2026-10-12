@@ -38,7 +38,7 @@ import openingCover from '../../assets/opening-cover.png';
 </html>
 
 <style is:global>
-  .entry{position:fixed;inset:0;z-index:50;overflow:hidden;background:#f8f4ec}.entry-panel{position:absolute;left:0;width:100%;height:50.1%;overflow:hidden;background:#f8f4ec;will-change:transform;transition:transform 900ms cubic-bezier(.77,0,.18,1)}.entry-panel--top{top:0}.entry-panel--bottom{bottom:0}.entry-art{position:absolute;left:0;width:100vw;height:100vh;max-width:none;object-fit:cover}.entry-panel--top .entry-art{top:0}.entry-panel--bottom .entry-art{bottom:0}.entry-trigger{position:absolute;inset:0;z-index:2;border:0;background:transparent;cursor:pointer}.entry-trigger:focus-visible{outline:3px solid #702c3b;outline-offset:-16px}.entry.is-opening .entry-panel--top{transform:translateY(-105%)}.entry.is-opening .entry-panel--bottom{transform:translateY(105%)}.entry.is-opening .entry-trigger{pointer-events:none}.entry.is-gone{display:none}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}@media(prefers-reduced-motion:reduce){.entry-panel{transition-duration:1ms}}
+  .entry{position:fixed;inset:0;z-index:50;overflow:hidden;background:#f8f4ec}.entry-panel{position:absolute;left:0;width:100%;height:50.1%;overflow:hidden;background:#f8f4ec;will-change:transform;transition:transform 900ms cubic-bezier(.77,0,.18,1)}.entry-panel--top{top:0}.entry-panel--bottom{bottom:0}.entry-art{position:absolute;left:0;width:100vw;height:100vh;max-width:none;object-fit:cover}.entry-panel--top .entry-art{top:0}.entry-panel--bottom .entry-art{bottom:0}.entry-trigger{position:absolute;inset:0;z-index:2;border:0;background:transparent;cursor:pointer}.entry-trigger:before,.entry-trigger:after{content:'';position:absolute;left:50%;top:50%;border-radius:50%;pointer-events:none;opacity:0;transform:translate(-50%,-50%) scale(.65)}.entry-trigger:before{width:min(52vw,520px);height:min(52vw,520px);border:2px solid #f5d58d;box-shadow:0 0 24px #f5d58dcc,0 0 75px #f5d58d99,0 0 150px #fff8d855}.entry-trigger:after{width:14px;height:14px;background:#fff8d8;box-shadow:0 0 18px 7px #f5d58d,0 0 42px 15px #f5d58d88}.entry-trigger:focus-visible{outline:3px solid #702c3b;outline-offset:-16px}.entry.is-opening .entry-trigger:before{opacity:1;animation:entry-ring 800ms ease-out both}.entry.is-opening .entry-trigger:after{opacity:1;animation:entry-core 800ms ease-out both}.entry.is-opening .entry-panel--top{transform:translateY(-105%)}.entry.is-opening .entry-panel--bottom{transform:translateY(105%)}.entry.is-opening .entry-trigger{pointer-events:none}.entry.is-gone{display:none}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}@keyframes entry-ring{0%{opacity:0;transform:translate(-50%,-50%) scale(.62) rotate(0)}25%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(1.08) rotate(180deg)}}@keyframes entry-core{0%{opacity:0;transform:translate(-50%,-50%) scale(.4)}20%{opacity:1}70%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(2.8)}}@media(prefers-reduced-motion:reduce){.entry-panel{transition-duration:1ms}.entry-trigger:before,.entry-trigger:after{animation:none!important}}
 </style>
 
 <style is:global>
@@ -51,11 +51,29 @@ import openingCover from '../../assets/opening-cover.png';
 
 <style is:global>
   .entry{background:#f8f4ec}
-  .entry{height:100dvh;min-height:0}
-  .entry-panel{height:50dvh}
-  .entry-art{height:100dvh;object-position:center center}
+  .entry{height:100vh;min-height:0}
+  .entry-panel{height:calc(50% + 1px);z-index:1}
+  .entry-panel--top{z-index:2}
+  .entry-art{display:block}
+  .entry-art{height:100vh;object-position:center center}
+  @supports (height:100dvh){.entry{height:100dvh}.entry-art{height:100dvh}}
   .hero h1{white-space:nowrap;font-size:clamp(3.2rem,9vw,8.5rem)}
   .hero h1 i{display:inline-block;margin:0 .1em;vertical-align:middle}
   .closing>span{display:none}
   @media(max-width:520px){.hero h1{font-size:clamp(2.8rem,13vw,4.3rem)}}
+</style>
+
+<style is="global">
+  @keyframes content-rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+  @keyframes soft-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+  .show nav{animation:content-rise .7s .08s both}
+  .show .hero-copy>*{animation:content-rise .8s both}
+  .show .hero-copy>*:nth-child(1){animation-delay:.16s}.show .hero-copy>*:nth-child(2){animation-delay:.24s}.show .hero-copy>*:nth-child(3){animation-delay:.32s}.show .hero-copy>*:nth-child(4){animation-delay:.4s}.show .hero-copy>*:nth-child(5){animation-delay:.48s}.show .hero-copy>*:nth-child(6){animation-delay:.56s}.show .hero-copy>*:nth-child(7){animation-delay:.64s}
+  .show .hero:after{animation:hero-frame 1.4s .2s both}
+  .show .hero h1 i{animation:soft-float 3.2s 1.2s ease-in-out infinite}
+  .show .count,.show .celebrations,.show .venue,.show .rsvp,.show .closing,.show footer{animation:content-rise .8s .22s both}
+  .show .function{animation:content-rise .7s both}
+  .show .function:nth-child(1){animation-delay:.18s}.show .function:nth-child(2){animation-delay:.26s}.show .function:nth-child(3){animation-delay:.34s}.show .function:nth-child(4){animation-delay:.42s}.show .function:nth-child(5){animation-delay:.5s}
+  @keyframes hero-frame{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+  @media(prefers-reduced-motion:reduce){.show nav,.show .hero-copy>*,.show .hero:after,.show .count,.show .celebrations,.show .venue,.show .rsvp,.show .closing,.show footer,.show .function{animation:none!important}}
 </style>
