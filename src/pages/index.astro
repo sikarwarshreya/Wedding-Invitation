@@ -14,7 +14,7 @@ import royalEmblem from '../../assets/royal-emblem.png';
     <title>Shrishti & Jaydeep — 12 December 2026</title>
   </head>
   <body>
-    <div class="entry" id="entry" aria-label="Wedding invitation cover">
+    <div class="entry" id="entry" aria-label="Wedding invitation cover" style={`--emblem: url(${royalEmblem.src})`}>
       <div class="entry-panel entry-panel--top" aria-hidden="true"></div>
       <div class="entry-panel entry-panel--bottom" aria-hidden="true"></div>
       <button class="entry-trigger" id="open-invitation" aria-label="Open Shrishti and Jaydeep's wedding invitation">
@@ -35,6 +35,6 @@ import royalEmblem from '../../assets/royal-emblem.png';
   </body>
 </html>
 
-<style is:global define:vars={{ emblem: royalEmblem.src }}>
+<style is:global>
   .entry{position:fixed;inset:0;z-index:50;overflow:hidden;background:#f8f4ec}.entry-panel{position:absolute;left:0;width:100%;height:50.1%;background-color:#f8f4ec;background-image:var(--emblem);background-repeat:no-repeat;background-size:auto 100vh;will-change:transform;transition:transform 900ms cubic-bezier(.77,0,.18,1)}.entry-panel--top{top:0;background-position:center top}.entry-panel--bottom{bottom:0;background-position:center bottom}.entry-trigger{position:absolute;inset:0;z-index:2;border:0;background:transparent;cursor:pointer}.entry-trigger:focus-visible{outline:3px solid #702c3b;outline-offset:-16px}.entry.is-opening .entry-panel--top{transform:translateY(-105%)}.entry.is-opening .entry-panel--bottom{transform:translateY(105%)}.entry.is-opening .entry-trigger{pointer-events:none}.entry.is-gone{display:none}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}@media(prefers-reduced-motion:reduce){.entry-panel{transition-duration:1ms}}
 </style>
