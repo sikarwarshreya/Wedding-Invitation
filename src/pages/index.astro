@@ -33,6 +33,16 @@ import openingCover from '../../assets/opening-cover.png';
       }, { once: true });
       document.querySelector('nav a[href="#invitation"]')?.setAttribute('href', '#welcome');
       document.querySelector('.hero-copy a[href="#invitation"]')?.setAttribute('href', '#celebrations');
+      const revealItems = document.querySelectorAll<HTMLElement>('.count, .celebrations, .venue, .rsvp, .closing, footer');
+      revealItems.forEach((item) => item.classList.add('reveal-on-scroll'));
+      const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.16, rootMargin: '0px 0px -8% 0px' });
+      revealItems.forEach((item) => revealObserver.observe(item));
     </script>
   </body>
 </html>
@@ -60,6 +70,12 @@ import openingCover from '../../assets/opening-cover.png';
   .hero h1{white-space:nowrap;font-size:clamp(3.2rem,9vw,8.5rem)}
   .hero h1 i{display:inline-block;margin:0 .1em;vertical-align:middle}
   .closing>span{display:none}
+  .seal-page:before,.seal-page:after{content:'';position:absolute;left:50%;top:calc(50% - 26px);border-radius:50%;pointer-events:none;transform:translate(-50%,-50%)}
+  .seal-page:before{width:min(76vw,452px);height:min(76vw,452px);border:1px solid #c5a46d; border-top-color:transparent;border-bottom-color:#e5c389;box-shadow:0 0 0 8px #c5a46d18,0 0 32px #c5a46d42;animation:seal-orbit 9s linear infinite}
+  .seal-page:after{width:min(66vw,398px);height:min(66vw,398px);border:1px dashed #e5c38980;animation:seal-orbit-reverse 14s linear infinite}
+  .seal-page.leave:before,.seal-page.leave:after{animation-play-state:paused}
+  @keyframes seal-orbit{to{transform:translate(-50%,-50%) rotate(360deg)}}
+  @keyframes seal-orbit-reverse{to{transform:translate(-50%,-50%) rotate(-360deg)}}
   @media(max-width:520px){.hero h1{font-size:clamp(2.8rem,13vw,4.3rem)}}
 </style>
 
@@ -71,9 +87,24 @@ import openingCover from '../../assets/opening-cover.png';
   .show .hero-copy>*:nth-child(1){animation-delay:.16s}.show .hero-copy>*:nth-child(2){animation-delay:.24s}.show .hero-copy>*:nth-child(3){animation-delay:.32s}.show .hero-copy>*:nth-child(4){animation-delay:.4s}.show .hero-copy>*:nth-child(5){animation-delay:.48s}.show .hero-copy>*:nth-child(6){animation-delay:.56s}.show .hero-copy>*:nth-child(7){animation-delay:.64s}
   .show .hero:after{animation:hero-frame 1.4s .2s both}
   .show .hero h1 i{animation:soft-float 3.2s 1.2s ease-in-out infinite}
+  .show .hero-copy>p:first-child{animation-delay:.12s}
+  .show .hero-copy>span{animation-delay:.28s}
+  .show .hero-copy>h1{animation:hero-title-in 1s .42s both}
+  .show .hero-copy>p:nth-of-type(2){animation-delay:.7s}
+  .show .hero-copy>b:nth-of-type(1){animation-delay:.84s}
+  .show .hero-copy>b:nth-of-type(2){animation-delay:.98s}
+  .show .hero-copy>.button{animation-delay:1.14s}
   .show .count,.show .celebrations,.show .venue,.show .rsvp,.show .closing,.show footer{animation:content-rise .8s .22s both}
   .show .function{animation:content-rise .7s both}
   .show .function:nth-child(1){animation-delay:.18s}.show .function:nth-child(2){animation-delay:.26s}.show .function:nth-child(3){animation-delay:.34s}.show .function:nth-child(4){animation-delay:.42s}.show .function:nth-child(5){animation-delay:.5s}
   @keyframes hero-frame{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
-  @media(prefers-reduced-motion:reduce){.show nav,.show .hero-copy>*,.show .hero:after,.show .count,.show .celebrations,.show .venue,.show .rsvp,.show .closing,.show footer,.show .function{animation:none!important}}
+  @keyframes hero-title-in{from{opacity:0;transform:translateY(28px) scale(.94);letter-spacing:.12em}to{opacity:1;transform:none;letter-spacing:normal}}
+  .reveal-on-scroll{opacity:0!important;transform:translateY(34px);animation:none!important;transition:opacity .8s ease,transform .8s cubic-bezier(.2,.75,.25,1)}
+  .reveal-on-scroll.is-visible{opacity:1!important;transform:none}
+  .reveal-on-scroll.is-visible .function{animation:content-rise .7s both}
+  .reveal-on-scroll.is-visible .function:nth-child(1){animation-delay:.08s}.reveal-on-scroll.is-visible .function:nth-child(2){animation-delay:.18s}.reveal-on-scroll.is-visible .function:nth-child(3){animation-delay:.28s}.reveal-on-scroll.is-visible .function:nth-child(4){animation-delay:.38s}.reveal-on-scroll.is-visible .function:nth-child(5){animation-delay:.48s}
+  .reveal-on-scroll.is-visible .time div{animation:content-rise .6s both}
+  .reveal-on-scroll.is-visible .time div:nth-child(1){animation-delay:.08s}.reveal-on-scroll.is-visible .time div:nth-child(2){animation-delay:.18s}.reveal-on-scroll.is-visible .time div:nth-child(3){animation-delay:.28s}.reveal-on-scroll.is-visible .time div:nth-child(4){animation-delay:.38s}
+  @media(prefers-reduced-motion:reduce){.reveal-on-scroll{opacity:1!important;transform:none;transition:none}.reveal-on-scroll.is-visible .function,.reveal-on-scroll.is-visible .time div{animation:none!important}}
+  @media(prefers-reduced-motion:reduce){.seal-page:before,.seal-page:after,.show nav,.show .hero-copy>*,.show .hero:after,.show .count,.show .celebrations,.show .venue,.show .rsvp,.show .closing,.show footer,.show .function{animation:none!important}}
 </style>
