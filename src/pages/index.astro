@@ -1,175 +1,257 @@
 ---
-import App from '../main.jsx';
-import '../styles.css';
-import openingCover from '../../assets/opening-cover.png';
+import '../styles/royal.css';
+import { wedding } from '../config/wedding';
+import { BackgroundMusic, PhotoGallery, WeddingCountdown } from '../components/InteractiveExperience.jsx';
+
+const base = import.meta.env.BASE_URL;
+const entranceImage = `${base}images/palace-entrance.jpg`;
+const lakeImage = `${base}images/palace-lake.jpg`;
+const mandapImage = `${base}images/royal-mandap.jpg`;
+const closingImage = `${base}images/twilight-palace.jpg`;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="hi">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#702c3b" />
-    <meta name="description" content="The wedding celebration of Shrishti Sikarwar and Jaydeep Singh Thakur." />
-    <title>Shrishti & Jaydeep — 12 December 2026</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#310B12" />
+    <meta name="description" content={`${wedding.couple.brideHi} एवं ${wedding.couple.groomHi} का शुभ विवाह समारोह।`} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500&family=Noto+Sans+Devanagari:wght@300;400;500&family=Noto+Serif+Devanagari:wght@400;500;600&display=swap" rel="stylesheet" />
+    <title data-hi={`${wedding.couple.brideShortHi} एवं ${wedding.couple.groomShortHi} — ${wedding.displayDateHi}`} data-en={`${wedding.couple.brideShort} & ${wedding.couple.groomShort} — ${wedding.displayDate}`}>{wedding.couple.brideShortHi} एवं {wedding.couple.groomShortHi} — {wedding.displayDateHi}</title>
   </head>
   <body>
-    <div class="entry" id="entry" aria-label="Wedding invitation cover">
-      <div class="entry-panel entry-panel--top" aria-hidden="true"><img class="entry-art" src={openingCover.src} alt="" /></div>
-      <div class="entry-panel entry-panel--bottom" aria-hidden="true"><img class="entry-art" src={openingCover.src} alt="" /></div>
-      <div class="rose-confetti" id="rose-confetti" aria-hidden="true"></div>
-      <button class="entry-trigger" id="open-invitation" aria-label="Open Shrishti and Jaydeep's wedding invitation">
-        <span class="sr-only">Tap to open the invitation</span>
-      </button>
+    <a class="skip-link" href="#invitation" data-hi="सीधे निमंत्रण पर जाएँ" data-en="Skip to invitation">सीधे निमंत्रण पर जाएँ</a>
+    <div class="language-toggle" role="group" aria-label="भाषा चुनें" data-aria-hi="भाषा चुनें" data-aria-en="Choose language">
+      <button type="button" data-language="hi" class="is-active" aria-pressed="true">हिंदी</button>
+      <button type="button" data-language="en" aria-pressed="false">English</button>
     </div>
-    <App client:load />
+
+    <div class="gate-intro" id="gate-intro" style={`--scene-image:url('${entranceImage}')`}>
+      <div class="intro-darkness" aria-hidden="true"></div>
+      <div class="intro-particles" aria-hidden="true">
+        {Array.from({ length: 18 }).map((_, index) => <i style={`--i:${index}`}></i>)}
+      </div>
+      <div class="palace-reveal" aria-hidden="true"></div>
+      <div class="royal-gate royal-gate-left" aria-hidden="true"><span></span></div>
+      <div class="royal-gate royal-gate-right" aria-hidden="true"><span></span></div>
+      <div class="intro-content">
+        <div class="intro-emblem" aria-hidden="true"><span>S</span><i>&</i><span>J</span></div>
+        <p>॥ श्री गणेशाय नमः ॥</p>
+        <span class="intro-overline" data-hi="शाही विवाह समारोह" data-en="The royal wedding celebration of">शाही विवाह समारोह</span>
+        <h1><span data-hi={wedding.couple.brideShortHi} data-en={wedding.couple.brideShort}>{wedding.couple.brideShortHi}</span> <i>&</i> <span data-hi={wedding.couple.groomShortHi} data-en={wedding.couple.groomShort}>{wedding.couple.groomShortHi}</span></h1>
+        <b><span data-hi={wedding.displayDateHi} data-en={wedding.displayDate}>{wedding.displayDateHi}</span> · <span data-hi={wedding.cityHi} data-en={wedding.city}>{wedding.cityHi}</span></b>
+        <button class="royal-button enter-button" id="enter-celebration" data-hi="शाही उत्सव में प्रवेश करें" data-en="Enter the Royal Celebration">शाही उत्सव में प्रवेश करें</button>
+      </div>
+      <p class="sound-note" data-hi="एक जीवंत शाही निमंत्रण" data-en="A cinematic invitation · Sound optional">एक जीवंत शाही निमंत्रण</p>
+    </div>
+
+    <header class="site-header">
+      <a class="nav-monogram" href="#invitation" aria-label="निमंत्रण पर लौटें" data-aria-hi="निमंत्रण पर लौटें" data-aria-en="Return to invitation">S <i>&</i> J</a>
+      <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-navigation" data-hi="मेन्यू" data-en="Menu">मेन्यू</button>
+      <nav id="main-navigation" aria-label="मुख्य नेविगेशन" data-aria-hi="मुख्य नेविगेशन" data-aria-en="Main navigation">
+        <a href="#invitation" data-hi="निमंत्रण" data-en="Invitation">निमंत्रण</a>
+        <a href="#story" data-hi="हमारी कहानी" data-en="Our story">हमारी कहानी</a>
+        <a href="#festivities" data-hi="उत्सव" data-en="Festivities">उत्सव</a>
+        <a href="#gallery" data-hi="चित्र दीर्घा" data-en="Gallery">चित्र दीर्घा</a>
+        <a href="#venue" data-hi="स्थान" data-en="Venue">स्थान</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="invitation-hero scene-section" id="invitation" style={`--scene-image:url('${entranceImage}')`}>
+        <div class="petal-field" aria-hidden="true">{Array.from({ length: 12 }).map((_, index) => <i style={`--i:${index}`}></i>)}</div>
+        <div class="jharokha-frame reveal">
+          <div class="invitation-content">
+            <p class="devanagari">॥ श्री गणेशाय नमः ॥</p>
+            <span class="kicker" data-hi="हमारे परिवारों के आशीर्वाद से" data-en="With the blessings of our families">हमारे परिवारों के आशीर्वाद से</span>
+            <p class="family-line" data-hi={wedding.familiesHi} data-en={wedding.families}>{wedding.familiesHi}</p>
+            <span class="together" data-hi="सपरिवार आपको सादर आमंत्रित करते हैं" data-en="Together with their families">सपरिवार आपको सादर आमंत्रित करते हैं</span>
+            <h2><span data-hi={wedding.couple.brideShortHi} data-en={wedding.couple.brideShort}>{wedding.couple.brideShortHi}</span><i>&</i><span data-hi={wedding.couple.groomShortHi} data-en={wedding.couple.groomShort}>{wedding.couple.groomShortHi}</span></h2>
+            <p class="invitation-copy" data-hi="अपने नवजीवन के शुभारंभ पर आपकी गरिमामयी उपस्थिति एवं आशीर्वाद के अभिलाषी हैं।" data-en="Request the honour of your presence as they begin their journey together.">अपने नवजीवन के शुभारंभ पर आपकी गरिमामयी उपस्थिति एवं आशीर्वाद के अभिलाषी हैं।</p>
+            <div class="ornament" aria-hidden="true"><span></span><i>◆</i><span></span></div>
+            <strong data-hi={wedding.displayDateHi} data-en={wedding.displayDate}>{wedding.displayDateHi}</strong>
+            <b data-hi={wedding.displayTimeHi} data-en={wedding.displayTime}>{wedding.displayTimeHi}</b>
+            <small data-hi={wedding.cityHi} data-en={wedding.city}>{wedding.cityHi}</small>
+          </div>
+        </div>
+      </section>
+
+      <section class="lake-scene scene-section" id="palace" style={`--scene-image:url('${lakeImage}')`}>
+        <div class="lake-overlay"></div>
+        <div class="water-reflection" aria-hidden="true"></div>
+        <div class="floating-diyas" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="scene-caption reveal">
+          <span class="kicker" data-hi="आपका हार्दिक स्वागत है" data-en="A heartfelt invitation">आपका हार्दिक स्वागत है</span>
+          <h2 data-hi="हमारे विवाह समारोह में आपका राजसी स्वागत" data-en="A Royal Welcome to Our Wedding Celebration">हमारे विवाह समारोह में आपका राजसी स्वागत</h2>
+          <p data-hi="हर्ष से भरे हृदय और ईश्वर के आशीर्वाद के साथ, हम आपको प्रेम, साथ और दो आत्माओं के पवित्र मिलन के इस शुभ अवसर पर सादर आमंत्रित करते हैं।" data-en="With hearts filled with joy and souls blessed by the divine, we cordially invite you to grace this auspicious occasion of love, togetherness, and the sacred union of two souls.">हर्ष से भरे हृदय और ईश्वर के आशीर्वाद के साथ, हम आपको प्रेम, साथ और दो आत्माओं के पवित्र मिलन के इस शुभ अवसर पर सादर आमंत्रित करते हैं।</p>
+          <p data-hi="जीवन भर की इस सुंदर यात्रा का शुभारंभ करते हुए, आपकी उपस्थिति और आशीर्वाद हमारे उत्सव को सचमुच विशेष और अविस्मरणीय बनाएँगे।" data-en="As we embark on this beautiful journey of a lifetime, your presence and blessings will make our celebration truly special and memorable.">जीवन भर की इस सुंदर यात्रा का शुभारंभ करते हुए, आपकी उपस्थिति और आशीर्वाद हमारे उत्सव को सचमुच विशेष और अविस्मरणीय बनाएँगे।</p>
+          <p data-hi="हम आपका हार्दिक स्वागत करते हैं कि आप हमारे विवाह उत्सव में सहभागी बनें और नवदम्पति को उनके सुखमय नवजीवन के लिए आशीर्वाद दें।" data-en="We warmly welcome you to be a part of our wedding festivities and bless the couple as they begin their happily ever after.">हम आपका हार्दिक स्वागत करते हैं कि आप हमारे विवाह उत्सव में सहभागी बनें और नवदम्पति को उनके सुखमय नवजीवन के लिए आशीर्वाद दें।</p>
+          <p class="welcome-closing" data-hi="आपकी उपस्थिति हमारा सम्मान है, आपका आशीर्वाद हमारी सबसे अनमोल धरोहर।" data-en="Your presence is our honour, your blessings our greatest treasure.">आपकी उपस्थिति हमारा सम्मान है, आपका आशीर्वाद हमारी सबसे अनमोल धरोहर।</p>
+        </div>
+      </section>
+
+      <section class="story-section section-shell" id="story">
+        <div class="section-heading reveal">
+          <span class="kicker" data-hi="हमारी कहानी" data-en="Our story">हमारी कहानी</span>
+          <h2 data-hi="सितारों में लिखी एक प्रेम कहानी" data-en="A Tale Written in the Stars">सितारों में लिखी एक प्रेम कहानी</h2>
+          <p data-hi="इन अध्यायों को वर-वधू की वास्तविक कहानी से सरलता से बदला जा सकता है।" data-en="The details below are intentionally editable placeholders for the couple’s own story.">इन अध्यायों को वर-वधू की वास्तविक कहानी से सरलता से बदला जा सकता है।</p>
+        </div>
+        <div class="story-timeline">
+          {wedding.story.map((chapter, index) => (
+            <article class:list={['story-chapter', 'reveal', { reverse: index % 2 }]}>
+              <div class="story-art" aria-hidden="true">
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <i class="painted-peacock">♧</i>
+              </div>
+              <div class="story-copy">
+                <span data-hi={chapter.yearHi} data-en={chapter.year}>{chapter.yearHi}</span>
+                <h3 data-hi={chapter.titleHi} data-en={chapter.title}>{chapter.titleHi}</h3>
+                <div class="mini-ornament" aria-hidden="true">— ◆ —</div>
+                <p data-hi={chapter.textHi} data-en={chapter.text}>{chapter.textHi}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="festivities-section section-shell" id="festivities">
+        <div class="section-heading reveal">
+          <span class="kicker" data-hi="शुभ विवाह के उत्सव" data-en="The wedding festivities">शुभ विवाह के उत्सव</span>
+          <h2 data-hi="उत्सव के पाँच मंगल अध्याय" data-en="Five Chapters of Celebration">उत्सव के पाँच मंगल अध्याय</h2>
+          <p data-hi="प्रत्येक समारोह हमारी शाही विवाह गाथा का एक अनमोल अध्याय है।" data-en="Each gathering is a handcrafted moment in our royal wedding story.">प्रत्येक समारोह हमारी शाही विवाह गाथा का एक अनमोल अध्याय है।</p>
+        </div>
+        <div class="event-scrolls">
+          {wedding.events.map((event, index) => (
+            <article class="event-card reveal">
+              <span class="event-number">{String(index + 1).padStart(2, '0')}</span>
+              <div class="event-medallion" aria-hidden="true">✦</div>
+              <h3 data-hi={event.nameHi} data-en={event.name}>{event.nameHi}</h3>
+              <p data-hi={event.descriptionHi} data-en={event.description}>{event.descriptionHi}</p>
+              <dl>
+                <div><dt data-hi="दिनांक" data-en="Date">दिनांक</dt><dd data-hi={event.dateHi} data-en={event.date}>{event.dateHi}</dd></div>
+                <div><dt data-hi="समय" data-en="Time">समय</dt><dd data-hi={event.timeHi} data-en={event.time}>{event.timeHi}</dd></div>
+                <div><dt data-hi="स्थान" data-en="Venue">स्थान</dt><dd data-hi={event.venueHi} data-en={event.venue}>{event.venueHi}</dd></div>
+                <div><dt data-hi="परिधान" data-en="Dress">परिधान</dt><dd data-hi={event.dressHi} data-en={event.dress}>{event.dressHi}</dd></div>
+              </dl>
+              {event.mapUrl ? <a href={event.mapUrl} target="_blank" rel="noreferrer" data-hi="दिशा देखें ↗" data-en="View directions ↗">दिशा देखें ↗</a> : <span class="pending-detail" data-hi="दिशा शीघ्र साझा होगी" data-en="Directions to follow">दिशा शीघ्र साझा होगी</span>}
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="mandap-scene scene-section" style={`--scene-image:url('${mandapImage}')`}>
+        <div class="mandap-vignette"></div>
+        <div class="mandap-message reveal">
+          <span class="kicker" data-hi="पवित्र मंडप के नीचे" data-en="Beneath the sacred mandap">पवित्र मंडप के नीचे</span>
+          <h2><span data-hi="एक वचन।" data-en="One Promise.">एक वचन।</span><br /><span data-hi="सात पवित्र फेरे।" data-en="Seven Sacred Steps.">सात पवित्र फेरे।</span></h2>
+          <div class="ornament light" aria-hidden="true"><span></span><i>◆</i><span></span></div>
+          <p data-hi="कृतज्ञ हृदय से हम आपको अपने मिलन का साक्षी बनने और हमारे नवजीवन को आशीर्वाद देने हेतु आमंत्रित करते हैं।" data-en="With hearts full of gratitude, we invite you to witness our union and bless the beginning of our forever.">कृतज्ञ हृदय से हम आपको अपने मिलन का साक्षी बनने और हमारे नवजीवन को आशीर्वाद देने हेतु आमंत्रित करते हैं।</p>
+          <strong data-hi={wedding.displayDateHi} data-en={wedding.displayDate}>{wedding.displayDateHi}</strong>
+        </div>
+      </section>
+
+      <WeddingCountdown client:load />
+      <PhotoGallery client:load />
+
+      <section class="venue-section section-shell" id="venue">
+        <div class="travel-journal reveal">
+          <div class="travel-copy">
+            <span class="kicker" data-hi="स्थान एवं यात्रा" data-en="Venue & travel">स्थान एवं यात्रा</span>
+            <h2 data-hi="उत्सव की ओर आपका सफ़र" data-en="Journey to the Celebration">उत्सव की ओर आपका सफ़र</h2>
+            <div class="ornament" aria-hidden="true"><span></span><i>◆</i><span></span></div>
+            <h3 data-hi={wedding.venue.nameHi} data-en={wedding.venue.name}>{wedding.venue.nameHi}</h3>
+            <address data-hi={wedding.venue.addressHi} data-en={wedding.venue.address}>{wedding.venue.addressHi}</address>
+            <p data-hi={wedding.venue.travelNoteHi} data-en={wedding.venue.travelNote}>{wedding.venue.travelNoteHi}</p>
+            <a class="royal-button" href={wedding.venue.mapUrl} target="_blank" rel="noreferrer" data-hi="Google Maps में खोलें" data-en="Open in Google Maps">Google Maps में खोलें</a>
+          </div>
+          <div class="map-preview" aria-label={`Map preview for ${wedding.venue.name}`}>
+            <div class="map-routes" aria-hidden="true"><i></i><i></i><i></i></div>
+            <span class="map-pin">◆</span>
+            <strong data-hi={wedding.venue.nameHi} data-en={wedding.venue.name}>{wedding.venue.nameHi}</strong>
+            <small data-hi={wedding.cityHi} data-en={wedding.city}>{wedding.cityHi}</small>
+          </div>
+        </div>
+        <div class="hotel-list">
+          {wedding.venue.hotels.map((hotel) => (
+            <article class="reveal"><span data-hi="आवास" data-en="Stay">आवास</span><h3 data-hi={hotel.nameHi} data-en={hotel.name}>{hotel.nameHi}</h3><p data-hi={hotel.detailHi} data-en={hotel.detail}>{hotel.detailHi}</p></article>
+          ))}
+        </div>
+      </section>
+
+      <section class="closing-scene scene-section" style={`--scene-image:url('${closingImage}')`}>
+        <div class="closing-border" aria-hidden="true"></div>
+        <div class="closing-content reveal">
+          <span class="kicker" data-hi="सप्रेम एवं सादर" data-en="With love and gratitude">सप्रेम एवं सादर</span>
+          <h2><span data-hi="दो आत्माएँ।" data-en="Two Souls.">दो आत्माएँ।</span><br /><span data-hi="एक सुंदर जीवन यात्रा।" data-en="One Beautiful Journey.">एक सुंदर जीवन यात्रा।</span></h2>
+          <div class="closing-names"><span data-hi={wedding.couple.brideShortHi} data-en={wedding.couple.brideShort}>{wedding.couple.brideShortHi}</span> <i>&</i> <span data-hi={wedding.couple.groomShortHi} data-en={wedding.couple.groomShort}>{wedding.couple.groomShortHi}</span></div>
+          <strong data-hi={wedding.displayDateHi} data-en={wedding.displayDate}>{wedding.displayDateHi}</strong>
+          <p data-hi="हमारी कहानी का हिस्सा बनने के लिए हृदय से धन्यवाद।" data-en="Thank you for being part of our story.">हमारी कहानी का हिस्सा बनने के लिए हृदय से धन्यवाद।</p>
+          <a href="#invitation" data-hi="आरंभ पर लौटें ↑" data-en="Return to the beginning ↑">आरंभ पर लौटें ↑</a>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>S <i>&</i> J</span>
+      <p>© 2026 <span data-hi={wedding.familiesHi} data-en={wedding.families}>{wedding.familiesHi}</span></p>
+    </footer>
+
+    <BackgroundMusic client:load />
+
     <script>
-      const entry = document.querySelector('#entry');
-      document.querySelector('#open-invitation')?.addEventListener('click', () => {
-        const confetti = document.querySelector<HTMLElement>('#rose-confetti');
-        if (confetti && !confetti.childElementCount) {
-          for (let i = 0; i < 30; i += 1) {
-            const petal = document.createElement('span');
-            petal.className = 'rose-petal';
-            petal.style.setProperty('--x', `${Math.round((Math.random() - .5) * 130)}vw`);
-            petal.style.setProperty('--r', `${Math.round((Math.random() - .5) * 720)}deg`);
-            petal.style.setProperty('--d', `${(Math.random() * .35).toFixed(2)}s`);
-            petal.style.setProperty('--s', `${(.7 + Math.random() * .7).toFixed(2)}`);
-            confetti.appendChild(petal);
-          }
-          confetti.classList.add('is-active');
-        }
-        entry?.classList.add('is-opening');
-        window.setTimeout(() => {
-          const openWelcome = () => {
-            const seal = document.querySelector<HTMLButtonElement>('.seal');
-            if (seal) seal.click();
-            else window.setTimeout(openWelcome, 100);
-          };
-          openWelcome();
-        }, 680);
-        window.setTimeout(() => entry?.classList.add('is-gone'), 1100);
-      }, { once: true });
-      document.querySelector('nav a[href="#invitation"]')?.setAttribute('href', '#welcome');
-      document.querySelector('.hero-copy a[href="#invitation"]')?.setAttribute('href', '#celebrations');
-      const setupScrollReveal = () => {
-        const revealItems = document.querySelectorAll<HTMLElement>('.count, .celebrations, .venue, .rsvp, .closing, footer');
-        if (!revealItems.length) {
-          window.setTimeout(setupScrollReveal, 120);
-          return;
-        }
-        revealItems.forEach((item) => {
-          item.classList.add('reveal-on-scroll');
-          item.dataset.aos = 'fade-up';
-          item.querySelectorAll<HTMLElement>('.function').forEach((card, index) => {
-            card.dataset.aos = index % 2 ? 'fade-up-left' : 'fade-up-right';
-            card.dataset.aosDelay = String(index * 90);
-          });
+      const languageButtons = document.querySelectorAll<HTMLButtonElement>('[data-language]');
+      const setLanguage = (language: 'hi' | 'en') => {
+        document.documentElement.lang = language;
+        document.querySelectorAll<HTMLElement>('[data-hi][data-en]').forEach((element) => {
+          element.textContent = element.dataset[language] || '';
         });
-        const revealOnScroll = () => {
-          revealItems.forEach((item) => {
-            if (item.getBoundingClientRect().top < window.innerHeight * .9) {
-              item.classList.add('is-visible', 'aos-animate');
-              item.querySelectorAll<HTMLElement>('[data-aos]').forEach((child) => child.classList.add('aos-animate'));
-            }
-          });
-        };
-        window.addEventListener('scroll', revealOnScroll, { passive: true });
-        revealOnScroll();
-        if (!('IntersectionObserver' in window)) {
-          revealItems.forEach((item) => item.classList.add('is-visible'));
-          return;
-        }
-        const revealObserver = new IntersectionObserver((entries, observer) => {
+        document.querySelectorAll<HTMLElement>('[data-aria-hi][data-aria-en]').forEach((element) => {
+          element.setAttribute('aria-label', element.dataset[`aria${language === 'hi' ? 'Hi' : 'En'}`] || '');
+        });
+        languageButtons.forEach((button) => {
+          const active = button.dataset.language === language;
+          button.classList.toggle('is-active', active);
+          button.setAttribute('aria-pressed', String(active));
+        });
+        window.dispatchEvent(new CustomEvent('invitation:language', { detail: language }));
+      };
+      languageButtons.forEach((button) => button.addEventListener('click', () => setLanguage(button.dataset.language === 'en' ? 'en' : 'hi')));
+
+      const intro = document.querySelector('#gate-intro');
+      const enterButton = document.querySelector('#enter-celebration');
+      enterButton?.addEventListener('click', () => {
+        intro?.classList.add('is-entering');
+        window.setTimeout(() => intro?.classList.add('is-gone'), 2600);
+      }, { once: true });
+
+      const menuButton = document.querySelector<HTMLButtonElement>('.menu-button');
+      const nav = document.querySelector<HTMLElement>('#main-navigation');
+      menuButton?.addEventListener('click', () => {
+        const open = menuButton.getAttribute('aria-expanded') === 'true';
+        menuButton.setAttribute('aria-expanded', String(!open));
+        nav?.classList.toggle('is-open', !open);
+      });
+      nav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
+        menuButton?.setAttribute('aria-expanded', 'false');
+        nav.classList.remove('is-open');
+      }));
+
+      const reveals = document.querySelectorAll<HTMLElement>('.reveal');
+      if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const observer = new IntersectionObserver((entries) => {
           entries.forEach((entry) => {
             if (!entry.isIntersecting) return;
-            entry.target.classList.add('is-visible', 'aos-animate');
-            entry.target.querySelectorAll<HTMLElement>('[data-aos]').forEach((child) => child.classList.add('aos-animate'));
+            entry.target.classList.add('is-visible');
             observer.unobserve(entry.target);
           });
-        }, { threshold: 0.16, rootMargin: '0px 0px -8% 0px' });
-        revealItems.forEach((item) => revealObserver.observe(item));
-      };
-      setupScrollReveal();
+        }, { threshold: .13, rootMargin: '0px 0px -7% 0px' });
+        reveals.forEach((element) => observer.observe(element));
+      } else {
+        reveals.forEach((element) => element.classList.add('is-visible'));
+      }
     </script>
   </body>
 </html>
-
-<style is:global>
-  .entry{position:fixed;inset:0;z-index:50;overflow:hidden;background:#f8f4ec}.entry-panel{position:absolute;left:0;width:100%;height:50.1%;overflow:hidden;background:#f8f4ec;will-change:transform;transition:transform 900ms cubic-bezier(.77,0,.18,1)}.entry-panel--top{top:0}.entry-panel--bottom{bottom:0}.entry-art{position:absolute;left:0;width:100vw;height:100vh;max-width:none;object-fit:cover}.entry-panel--top .entry-art{top:0}.entry-panel--bottom .entry-art{bottom:0}.entry-trigger{position:absolute;inset:0;z-index:2;border:0;background:transparent;cursor:pointer}.entry-trigger:before,.entry-trigger:after{content:'';position:absolute;left:50%;top:50%;border-radius:50%;pointer-events:none;opacity:0;transform:translate(-50%,-50%)}.entry-trigger:before{width:min(31vw,330px);height:min(31vw,330px);border:4px solid #f5d58d3d;border-top-color:#fff7d8;border-right-color:#c69445;box-shadow:0 0 18px #f5d58dcc,0 0 50px #f5d58d88,0 0 110px #fff8d855}.entry-trigger:after{width:12px;height:12px;background:#fff8d8;box-shadow:0 0 16px 6px #f5d58d,0 0 42px 15px #f5d58d88}.entry-trigger:focus-visible{outline:3px solid #702c3b;outline-offset:-16px}.entry.is-loading .entry-trigger:before{opacity:1;animation:entry-spinner 1.05s linear infinite}.entry.is-loading .entry-trigger:after{opacity:1;animation:entry-shimmer 1.05s ease-in-out infinite}.entry.is-opening .entry-trigger:before{opacity:0;animation:none}.entry.is-opening .entry-trigger:after{opacity:0;animation:none}.entry.is-opening .entry-panel--top{transform:translateY(-105%)}.entry.is-opening .entry-panel--bottom{transform:translateY(105%)}.entry.is-opening .entry-trigger{pointer-events:none}.entry.is-gone{display:none}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}@keyframes entry-spinner{to{transform:translate(-50%,-50%) rotate(360deg)}}@keyframes entry-shimmer{0%,100%{transform:translate(-50%,-50%) scale(.65);opacity:.45}50%{transform:translate(-50%,-50%) scale(1.6);opacity:1}}@media(prefers-reduced-motion:reduce){.entry-panel{transition-duration:1ms}.entry-trigger:before,.entry-trigger:after{animation:none!important}}
-</style>
-
-<style is="global">
-  .entry-trigger:before{width:min(58vw,560px);height:min(58vw,560px);display:none}
-  .rose-confetti{position:absolute;inset:0;z-index:4;overflow:hidden;pointer-events:none;opacity:0}
-  .rose-confetti.is-active{opacity:1}
-  .rose-petal{position:absolute;left:50%;top:48%;width:clamp(12px,1.6vw,23px);height:clamp(18px,2.3vw,32px);border-radius:72% 28% 72% 28%;background:linear-gradient(135deg,#f2c3b8,#a94858 58%,#702c3b);box-shadow:0 2px 8px #702c3b55;opacity:0;transform:translate(-50%,-50%) scale(var(--s));animation:rose-fall 1.45s var(--d) cubic-bezier(.16,.7,.25,1) forwards;will-change:transform,opacity}
-  .rose-petal:nth-child(3n){background:linear-gradient(135deg,#fff0dd,#d58b7d 58%,#9c4d58)}
-  .rose-petal:nth-child(4n){border-radius:28% 72% 28% 72%}
-  @keyframes rose-fall{0%{opacity:0;transform:translate(-50%,-50%) rotate(0) scale(.2)}12%{opacity:.95}100%{opacity:0;transform:translate(calc(-50% + var(--x)),calc(-50% + 58vh)) rotate(var(--r)) scale(var(--s))}}
-  @media(prefers-reduced-motion:reduce){.rose-petal{animation:none;opacity:0}.rose-confetti{display:none}}
-</style>
-
-<style is:global>
-  .invitation{display:none}
-  .story,.gallery{display:none}
-  nav a[href="#story"],nav a[href="#gallery"]{display:none}
-  .hero-copy:after{content:'With the blessings of the Almighty and the love of our families, we invite you to join us as Shrishti and Jaydeep begin their beautiful journey together.';display:block;max-width:540px;margin:26px auto 0;color:#fffaf0;font:15px/1.65 'DM Sans',sans-serif;text-shadow:0 2px 10px #352018;}
-  @media(max-width:600px){.hero-copy:after{max-width:320px;font-size:13px;line-height:1.55;margin-top:20px}}
-</style>
-
-<style is:global>
-  .entry{background:#f8f4ec}
-  .entry{height:100vh;min-height:0}
-  .entry-panel{height:calc(50% + 1px);z-index:1}
-  .entry-panel--top{z-index:2}
-  .entry-art{display:block}
-  .entry-art{height:100vh;object-position:center center}
-  @supports (height:100dvh){.entry{height:100dvh}.entry-art{height:100dvh}}
-  .hero h1{white-space:nowrap;font-size:clamp(3.2rem,9vw,8.5rem)}
-  .hero h1 i{display:inline-block;margin:0 .1em;vertical-align:middle}
-  .closing>span{display:none}
-  .seal-page:before,.seal-page:after{content:'';position:absolute;left:50%;top:calc(50% - 26px);border-radius:50%;pointer-events:none;transform:translate(-50%,-50%)}
-  .seal-page:before{width:min(76vw,452px);height:min(76vw,452px);border:1px solid #c5a46d; border-top-color:transparent;border-bottom-color:#e5c389;box-shadow:0 0 0 8px #c5a46d18,0 0 32px #c5a46d42;animation:seal-orbit 9s linear infinite}
-  .seal-page:after{width:min(66vw,398px);height:min(66vw,398px);border:1px dashed #e5c38980;animation:seal-orbit-reverse 14s linear infinite}
-  .seal-page.leave:before,.seal-page.leave:after{animation-play-state:paused}
-  @keyframes seal-orbit{to{transform:translate(-50%,-50%) rotate(360deg)}}
-  @keyframes seal-orbit-reverse{to{transform:translate(-50%,-50%) rotate(-360deg)}}
-  @media(max-width:520px){.hero h1{font-size:clamp(2.8rem,13vw,4.3rem)}}
-</style>
-
-<style is="global">
-  @keyframes content-rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
-  @keyframes soft-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-  .show nav{animation:content-rise .7s .08s both}
-  .show .hero-copy>*{animation:content-rise .8s both}
-  .show .hero-copy>*:nth-child(1){animation-delay:.16s}.show .hero-copy>*:nth-child(2){animation-delay:.24s}.show .hero-copy>*:nth-child(3){animation-delay:.32s}.show .hero-copy>*:nth-child(4){animation-delay:.4s}.show .hero-copy>*:nth-child(5){animation-delay:.48s}.show .hero-copy>*:nth-child(6){animation-delay:.56s}.show .hero-copy>*:nth-child(7){animation-delay:.64s}
-  .show .hero:after{animation:hero-frame 1.4s .2s both}
-  .show .hero h1 i{animation:soft-float 3.2s 1.2s ease-in-out infinite}
-  .show .hero-copy>p:first-child{animation-delay:.12s}
-  .show .hero-copy>span{animation-delay:.28s}
-  .show .hero-copy>h1{animation:hero-title-in 1s .42s both}
-  .show .hero-copy>p:nth-of-type(2){animation-delay:.7s}
-  .show .hero-copy>b:nth-of-type(1){animation-delay:.84s}
-  .show .hero-copy>b:nth-of-type(2){animation-delay:.98s}
-  .show .hero-copy>.button{animation-delay:1.14s}
-  .show .count,.show .celebrations,.show .venue,.show .rsvp,.show .closing,.show footer{animation:content-rise .8s .22s both}
-  .show .function{animation:content-rise .7s both}
-  .show .function:nth-child(1){animation-delay:.18s}.show .function:nth-child(2){animation-delay:.26s}.show .function:nth-child(3){animation-delay:.34s}.show .function:nth-child(4){animation-delay:.42s}.show .function:nth-child(5){animation-delay:.5s}
-  @keyframes hero-frame{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
-  @keyframes hero-title-in{from{opacity:0;transform:translateY(28px) scale(.94);letter-spacing:.12em}to{opacity:1;transform:none;letter-spacing:normal}}
-  .reveal-on-scroll{opacity:0!important;transform:translateY(34px);animation:none!important;transition:opacity .8s ease,transform .8s cubic-bezier(.2,.75,.25,1)}
-  .reveal-on-scroll.is-visible{opacity:1!important;transform:none}
-  .reveal-on-scroll.is-visible .function{animation:content-rise .7s both}
-  .reveal-on-scroll.is-visible .function:nth-child(1){animation-delay:.08s}.reveal-on-scroll.is-visible .function:nth-child(2){animation-delay:.18s}.reveal-on-scroll.is-visible .function:nth-child(3){animation-delay:.28s}.reveal-on-scroll.is-visible .function:nth-child(4){animation-delay:.38s}.reveal-on-scroll.is-visible .function:nth-child(5){animation-delay:.48s}
-  .reveal-on-scroll.is-visible .time div{animation:content-rise .6s both}
-  .reveal-on-scroll.is-visible .time div:nth-child(1){animation-delay:.08s}.reveal-on-scroll.is-visible .time div:nth-child(2){animation-delay:.18s}.reveal-on-scroll.is-visible .time div:nth-child(3){animation-delay:.28s}.reveal-on-scroll.is-visible .time div:nth-child(4){animation-delay:.38s}
-  [data-aos]{transition:opacity .8s ease,transform .8s cubic-bezier(.2,.75,.25,1);will-change:opacity,transform}
-  [data-aos="fade-up"]{opacity:0;transform:translate3d(0,38px,0)}
-  [data-aos="fade-up-left"]{opacity:0;transform:translate3d(38px,38px,0)}
-  [data-aos="fade-up-right"]{opacity:0;transform:translate3d(-38px,38px,0)}
-  [data-aos].aos-animate{opacity:1;transform:none}
-  [data-aos][data-aos-delay="90"]{transition-delay:.09s}[data-aos][data-aos-delay="180"]{transition-delay:.18s}[data-aos][data-aos-delay="270"]{transition-delay:.27s}[data-aos][data-aos-delay="360"]{transition-delay:.36s}
-  @media(prefers-reduced-motion:reduce){.reveal-on-scroll{opacity:1!important;transform:none;transition:none}.reveal-on-scroll.is-visible .function,.reveal-on-scroll.is-visible .time div{animation:none!important}}
-  @media(prefers-reduced-motion:reduce){.seal-page:before,.seal-page:after,.show nav,.show .hero-copy>*,.show .hero:after,.show .count,.show .celebrations,.show .venue,.show .rsvp,.show .closing,.show footer,.show .function{animation:none!important}}
-</style>
